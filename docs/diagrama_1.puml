@@ -1,0 +1,58 @@
+@startuml Diagram de Clases
+
+' Clases
+class Model {
+ clase de SQLAlchemy
+}
+
+class User {
+    - username: str
+    - email: str
+    - password: str
+}
+
+class UserData{
+    - name: str
+    - firstname: str
+    - lastname: str
+    - phone: str
+    - address: str
+    - city: str
+    - country: str
+}
+
+class Task {
+    - name: str
+    - description: str
+    - start_date: str
+    - deadline: str
+    - priority: str
+    - difficulty: str
+    - state: str
+}
+
+class Team {
+    - name: str
+}
+
+class Project {
+    - name: str
+    - description: str
+    - start_date: str
+    - deadline: str
+    - state: str
+}
+
+' Herencias
+Model <|-- User
+Model <|-- UserData
+Model <|-- Task
+Model <|-- Team
+Model <|-- Project
+
+User "1" *--- "1" UserData 
+User "m" ---- "n" Team
+User "m" ---- "n" Task
+Project "1" ---- "1" Team
+Project "1" ---- "N" Task
+@enduml
