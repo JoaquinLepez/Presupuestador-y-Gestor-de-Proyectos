@@ -1,20 +1,30 @@
+from dotenv import load_dotenv
+from pathlib import Path
+import os
+
+basedir = os.path.abspath(Path(__file__).parents[2])
+load_dotenv(os.path.join(basedir, '.env'))
+
 class Config:
      SQLALCHEMY_TRACK_MODIFICATIONS = False
 
      @staticmethod
      def init_app(app):
          pass
-        # app.run(host="0.0.0.0", port=5000, debug=True)
+        
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql://joaquin:123456789@localhost:5432/dev_database'
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DB_URI')
 
 class TestingConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://joaquin:123456789@localhost:5432/test_database'
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    TESTING= True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DB_URI')
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql://joaquin:123456789@localhost:5432/database'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('PROD_DB_URI')
 
 config = {
     'development': DevelopmentConfig,
