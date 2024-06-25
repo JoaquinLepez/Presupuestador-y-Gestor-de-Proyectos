@@ -1,17 +1,17 @@
-from app.repositories import Project_Repository
+from app.repositories import ProjectRepository
 
-repository = Project_Repository()
+repository = ProjectRepository()
 
-class ProyectService:
+class ProjectService:
 
-    def save(self, proyect):
-        return repository.save(proyect)
+    def save(self, project):
+        return repository.save(project)
     
-    def update(self, proyect, id):
-        return repository.update(proyect, id)
+    def update(self, project, id):
+        return repository.update(project, id)
     
-    def delete(self, proyect):
-        return repository.delete()
+    def delete(self, project):
+        return repository.delete(project)
     
     def all(self):
         return repository.all()

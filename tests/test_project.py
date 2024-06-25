@@ -41,8 +41,8 @@ class ProjectTasteCase(unittest.TestCase):
         self.assertTrue(project.start_date, self.START_DATE_PRUEBA)
         self.assertTrue(project.deadline, self.DEADLINE_PRUEBA)
         self.assertTrue(project.state, self.STATE_PRUEBA)
-        self.assertIsNotNone(project.tasks[0])
-        self.assertEqual(project.tasks[0].name, self.TASK1_NAME_PRUEBA)
+        self.assertIsNotNone(project.task[0])
+        self.assertEqual(project.task[0].name, self.TASK1_NAME_PRUEBA)
     
     def test_project_save(self):
         project = self.__get_project()
@@ -55,8 +55,8 @@ class ProjectTasteCase(unittest.TestCase):
         self.assertEqual(project.start_date, self.START_DATE_PRUEBA)
         self.assertEqual(project.deadline, self.DEADLINE_PRUEBA)
         self.assertEqual(project.state, self.STATE_PRUEBA)
-        self.assertIsNotNone(project.tasks[0])
-        self.assertEqual(project.tasks[0].name, self.TASK1_NAME_PRUEBA)
+        self.assertIsNotNone(project.task[0])
+        self.assertEqual(project.task[0].name, self.TASK1_NAME_PRUEBA)
     
     def test_project_delete(self):
         project = self.__get_project()
@@ -106,7 +106,7 @@ class ProjectTasteCase(unittest.TestCase):
         project.deadline = self.DEADLINE_PRUEBA
         project.state = self.STATE_PRUEBA
 
-        project.tasks.append(task1)
+        project.task.append(task1)
 
         return project
     
