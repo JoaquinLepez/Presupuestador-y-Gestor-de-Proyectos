@@ -43,16 +43,29 @@ class Project {
     - state: str
 }
 
+class Role {
+    - name: str
+}
+
+class Permission {
+    - name: str
+}
+
 ' Herencias
 Model <|-- User
 Model <|-- UserData
 Model <|-- Task
 Model <|-- Team
 Model <|-- Project
+Model <|-- Role
+Model <|-- Permission
 
-User "1" *--- "1" UserData 
-User "m" ---- "n" Team
-User "m" ---- "n" Task
+User "1" ---- "1" UserData 
+User "M" ---- "N" Team
+User "M" ---- "N" Task
 Project "1" ---- "1" Team
 Project "1" ---- "N" Task
+User "M" ---- "N" Role
+Role "M" ---- "N" Permission
+
 @enduml
