@@ -1,4 +1,4 @@
-import unittest
+import unittest,os
 from app import create_app, db
 from app.models import User
 from app.services import UserService
@@ -9,11 +9,12 @@ class UserTestCase(unittest.TestCase):
     
     def setUp(self):
         # User
-        self.USERNAME_PRUEBA = 'ramandu'
-        self.PASSWORD_PRUEBA = '123456'
-        self.EMAIL_PRUEBA = 'test@test.com'
+        self.USERNAME_TEST = 'ramandu'
+        self.PASSWORD_TEST = '123456'
+        self.EMAIL_TEST = 'test@test.com'
     
-        self.app = create_app("testing")
+        os.environ['FLASK_CONTEXT'] = 'testing'
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
@@ -23,16 +24,12 @@ class UserTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-    def test_user(self):
-        
+    def test_user(self):  
         user = self.__get_user()
 
-        # db.session.add(user)
-        # db.session.commit()
-
-        self.assertEqual(user.email, self.EMAIL_PRUEBA)
-        self.assertEqual(user.username, self.USERNAME_PRUEBA)
-        self.assertEqual(user.password, self.PASSWORD_PRUEBA)
+        self.assertEqual(user.email, self.EMAIL_TEST)
+        self.assertEqual(user.username, self.USERNAME_TEST)
+        self.assertEqual(user.password, self.PASSWORD_TEST)
 
     def test_user_save(self):
         user = self.__get_user()
@@ -40,10 +37,10 @@ class UserTestCase(unittest.TestCase):
         user_service.save(user)
 
         self.assertGreaterEqual(user.id, 1)
-        self.assertEqual(user.email, self.EMAIL_PRUEBA)
-        self.assertEqual(user.username, self.USERNAME_PRUEBA)
+        self.assertEqual(user.email, self.EMAIL_TEST)
+        self.assertEqual(user.username, self.USERNAME_TEST)
         self.assertIsNotNone(user.password)
-        self.assertTrue(user_service.check_auth(user.username, self.PASSWORD_PRUEBA))
+        self.assertTrue(user_service.check_auth(user.username, self.PASSWORD_TEST))
     
     def test_user_delete(self):
         user = self.__get_user()
@@ -68,11 +65,11 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(user_find.id, user.id)
         self.assertEqual(user_find.email, user.email)
 
-    def __get_user(self):
+    def __get_user(self) -> User:
         user = User()
-        user.username = self.USERNAME_PRUEBA
-        user.email = self.EMAIL_PRUEBA
-        user.password = self.PASSWORD_PRUEBA
+        user.username = self.USERNAME_TEST
+        user.email = self.EMAIL_TEST
+        user.password = self.PASSWORD_TEST
 
         return user
     

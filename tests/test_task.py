@@ -1,4 +1,4 @@
-import unittest
+import unittest, os
 from app import create_app, db
 from app.models import Task
 from app.services import TaskService
@@ -9,15 +9,16 @@ class TaskTestCase(unittest.TestCase):
     
     def setUp(self):
         # Task
-        self.NAME_PRUEBA = 'Tarea 1'
-        self.DESCRIPTION_PRUEBA = 'Make Money'
-        self.STARTDATE_PRUEBA = '1/1/0'
-        self.DEADLINE_PRUEBA = '8/7/24'
-        self.PRIORITY_PRUEBA = 'High'
-        self.DIFFICULTY_PRUEBA = 'Hard'
-        self.STATE_PRUEBA = 'In Progress'
+        self.NAME_TEST = 'Tarea 1'
+        self.DESCRIPTION_TEST = 'Make Money'
+        self.STARTDATE_TEST = '1/1/0'
+        self.DEADLINE_TEST = '8/7/24'
+        self.PRIORITY_TEST = 'High'
+        self.DIFFICULTY_TEST = 'Hard'
+        self.STATE_TEST = 'In Progress'
 
-        self.app = create_app("testing")
+        os.environ['FLASK_CONTEXT'] = 'testing'
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
@@ -27,20 +28,16 @@ class TaskTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-    def test_task(self):
-        
+    def test_task(self):   
         task = self.__get_task()
 
-        # db.session.add(user)
-        # db.session.commit()
-
-        self.assertEqual(task.name, self.NAME_PRUEBA)
-        self.assertEqual(task.description, self.DESCRIPTION_PRUEBA)
-        self.assertEqual(task.start_date, self.STARTDATE_PRUEBA)
-        self.assertEqual(task.deadline, self.DEADLINE_PRUEBA)
-        self.assertEqual(task.priority, self.PRIORITY_PRUEBA)
-        self.assertEqual(task.difficulty, self.DIFFICULTY_PRUEBA)
-        self.assertEqual(task.state, self.STATE_PRUEBA)
+        self.assertEqual(task.name, self.NAME_TEST)
+        self.assertEqual(task.description, self.DESCRIPTION_TEST)
+        self.assertEqual(task.start_date, self.STARTDATE_TEST)
+        self.assertEqual(task.deadline, self.DEADLINE_TEST)
+        self.assertEqual(task.priority, self.PRIORITY_TEST)
+        self.assertEqual(task.difficulty, self.DIFFICULTY_TEST)
+        self.assertEqual(task.state, self.STATE_TEST)
 
     def test_task_save(self):
         task = self.__get_task()
@@ -48,13 +45,13 @@ class TaskTestCase(unittest.TestCase):
         task_service.save(task)
 
         self.assertGreaterEqual(task.id,1)
-        self.assertEqual(task.name, self.NAME_PRUEBA)
-        self.assertEqual(task.description, self.DESCRIPTION_PRUEBA)
-        self.assertEqual(task.start_date, self.STARTDATE_PRUEBA)
-        self.assertEqual(task.deadline, self.DEADLINE_PRUEBA)
-        self.assertEqual(task.priority, self.PRIORITY_PRUEBA)
-        self.assertEqual(task.difficulty, self.DIFFICULTY_PRUEBA)
-        self.assertEqual(task.state, self.STATE_PRUEBA)
+        self.assertEqual(task.name, self.NAME_TEST)
+        self.assertEqual(task.description, self.DESCRIPTION_TEST)
+        self.assertEqual(task.start_date, self.STARTDATE_TEST)
+        self.assertEqual(task.deadline, self.DEADLINE_TEST)
+        self.assertEqual(task.priority, self.PRIORITY_TEST)
+        self.assertEqual(task.difficulty, self.DIFFICULTY_TEST)
+        self.assertEqual(task.state, self.STATE_TEST)
 
     def test_task_delete(self):
         task = self.__get_task()
@@ -86,15 +83,15 @@ class TaskTestCase(unittest.TestCase):
         self.assertIsNotNone(task_find)
         self.assertEqual(task_find.id, task.id)
 
-    def __get_task(self):
+    def __get_task(self) -> Task:
         task = Task()
-        task.name = self.NAME_PRUEBA
-        task.description = self.DESCRIPTION_PRUEBA
-        task.start_date = self.STARTDATE_PRUEBA
-        task.deadline = self.DEADLINE_PRUEBA
-        task.priority = self.PRIORITY_PRUEBA
-        task.difficulty = self.DIFFICULTY_PRUEBA
-        task.state = self.STATE_PRUEBA
+        task.name = self.NAME_TEST
+        task.description = self.DESCRIPTION_TEST
+        task.start_date = self.STARTDATE_TEST
+        task.deadline = self.DEADLINE_TEST
+        task.priority = self.PRIORITY_TEST
+        task.difficulty = self.DIFFICULTY_TEST
+        task.state = self.STATE_TEST
 
         return task
     

@@ -1,4 +1,4 @@
-import unittest
+import unittest, os
 from sqlalchemy import text
 
 from app import create_app, db
@@ -6,7 +6,8 @@ from app import create_app, db
 class ConnectionTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = create_app("testing")
+        os.environ['FLASK_CONTEXT'] = 'testing'
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()

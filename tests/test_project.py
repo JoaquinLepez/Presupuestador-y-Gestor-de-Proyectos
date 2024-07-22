@@ -1,4 +1,4 @@
-import unittest
+import unittest, os
 from app import create_app, db
 from app.models import Project, Task
 from app.services import ProjectService
@@ -9,21 +9,22 @@ class ProjectTasteCase(unittest.TestCase):
 
     def setUp(self):   
         # Project
-        self.NAME_PRUEBA = "mi proyecto"
-        self.DESCRIPTION_PRUEBA = "esta es la descripcion de mi proyecto"
-        self.START_DATE_PRUEBA = "1/1/2024"
-        self.DEADLINE_PRUEBA = "28/2/2024"
-        self.STATE_PRUEBA = "en proceso"
+        self.NAME_TEST = "mi proyecto"
+        self.DESCRIPTION_TEST = "esta es la descripcion de mi proyecto"
+        self.START_DATE_TEST = "1/1/2024"
+        self.DEADLINE_TEST = "28/2/2024"
+        self.STATE_TEST = "en proceso"
         # Task 1
-        self.TASK1_NAME_PRUEBA = "prueba número 1"
-        self.TASK1_DESCRIPTION_PRUEBA = "esta es la descripcion de mi prueba número 1"
-        self.TASK1_START_DATE_PRUEBA = "1/1/2024"
-        self.TASK1_DEADLINE_PRUEBA = "28/2/2024"
-        self.TASK1_PRIORITY_PRUEBA = "alta prioridad"
-        self.TASK1_DIFFICULTY_PRUEBA = "elevada"
-        self.TASK1_STATE_PRUEBA = "en proceso"
+        self.TASK1_NAME_TEST = "TEST número 1"
+        self.TASK1_DESCRIPTION_TEST = "esta es la descripcion de mi TEST número 1"
+        self.TASK1_START_DATE_TEST = "1/1/2024"
+        self.TASK1_DEADLINE_TEST = "28/2/2024"
+        self.TASK1_PRIORITY_TEST = "alta prioridad"
+        self.TASK1_DIFFICULTY_TEST = "elevada"
+        self.TASK1_STATE_TEST = "en proceso"
 
-        self.app = create_app("testing")
+        os.environ['FLASK_CONTEXT'] = 'testing'
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
@@ -36,13 +37,13 @@ class ProjectTasteCase(unittest.TestCase):
     def test_project(self):
         project = self.__get_project()
 
-        self.assertTrue(project.name, self.NAME_PRUEBA)
-        self.assertTrue(project.description, self.DESCRIPTION_PRUEBA)
-        self.assertTrue(project.start_date, self.START_DATE_PRUEBA)
-        self.assertTrue(project.deadline, self.DEADLINE_PRUEBA)
-        self.assertTrue(project.state, self.STATE_PRUEBA)
+        self.assertTrue(project.name, self.NAME_TEST)
+        self.assertTrue(project.description, self.DESCRIPTION_TEST)
+        self.assertTrue(project.start_date, self.START_DATE_TEST)
+        self.assertTrue(project.deadline, self.DEADLINE_TEST)
+        self.assertTrue(project.state, self.STATE_TEST)
         self.assertIsNotNone(project.task[0])
-        self.assertEqual(project.task[0].name, self.TASK1_NAME_PRUEBA)
+        self.assertEqual(project.task[0].name, self.TASK1_NAME_TEST)
     
     def test_project_save(self):
         project = self.__get_project()
@@ -50,13 +51,13 @@ class ProjectTasteCase(unittest.TestCase):
         project_service.save(project)
 
         self.assertGreaterEqual(project.id,1)
-        self.assertEqual(project.name, self.NAME_PRUEBA)
-        self.assertEqual(project.description, self.DESCRIPTION_PRUEBA)
-        self.assertEqual(project.start_date, self.START_DATE_PRUEBA)
-        self.assertEqual(project.deadline, self.DEADLINE_PRUEBA)
-        self.assertEqual(project.state, self.STATE_PRUEBA)
+        self.assertEqual(project.name, self.NAME_TEST)
+        self.assertEqual(project.description, self.DESCRIPTION_TEST)
+        self.assertEqual(project.start_date, self.START_DATE_TEST)
+        self.assertEqual(project.deadline, self.DEADLINE_TEST)
+        self.assertEqual(project.state, self.STATE_TEST)
         self.assertIsNotNone(project.task[0])
-        self.assertEqual(project.task[0].name, self.TASK1_NAME_PRUEBA)
+        self.assertEqual(project.task[0].name, self.TASK1_NAME_TEST)
     
     def test_project_delete(self):
         project = self.__get_project()
@@ -88,23 +89,23 @@ class ProjectTasteCase(unittest.TestCase):
         self.assertIsNotNone(project_find)
         self.assertEqual(project_find.id, project.id)
 
-    def __get_project(self):
+    def __get_project(self) -> Project:
 
         task1 = Task()
-        task1.name = self.TASK1_NAME_PRUEBA
-        task1.description = self.TASK1_DESCRIPTION_PRUEBA
-        task1.start_date = self.TASK1_START_DATE_PRUEBA
-        task1.deadline = self.TASK1_DEADLINE_PRUEBA
-        task1.priority = self.TASK1_PRIORITY_PRUEBA
-        task1.difficulty = self.TASK1_DIFFICULTY_PRUEBA
-        task1.state = self.TASK1_STATE_PRUEBA
+        task1.name = self.TASK1_NAME_TEST
+        task1.description = self.TASK1_DESCRIPTION_TEST
+        task1.start_date = self.TASK1_START_DATE_TEST
+        task1.deadline = self.TASK1_DEADLINE_TEST
+        task1.priority = self.TASK1_PRIORITY_TEST
+        task1.difficulty = self.TASK1_DIFFICULTY_TEST
+        task1.state = self.TASK1_STATE_TEST
 
         project = Project()
-        project.name = self.NAME_PRUEBA
-        project.description = self.DESCRIPTION_PRUEBA
-        project.start_date = self.START_DATE_PRUEBA
-        project.deadline = self.DEADLINE_PRUEBA
-        project.state = self.STATE_PRUEBA
+        project.name = self.NAME_TEST
+        project.description = self.DESCRIPTION_TEST
+        project.start_date = self.START_DATE_TEST
+        project.deadline = self.DEADLINE_TEST
+        project.state = self.STATE_TEST
 
         project.task.append(task1)
 

@@ -1,4 +1,4 @@
-import unittest
+import unittest,os
 from app import create_app, db
 from app.models import UserData
 
@@ -6,14 +6,15 @@ class UserDataTestCase(unittest.TestCase):
     
     def setUp(self):
         # User Data
-        self.FIRSTNAME_PRUEBA = 'Juan'
-        self.LASTNAME_PRUEBA = 'Salleme'
-        self.PHONE_PRUEBA = '542604660415'
-        self.ADDRESS_PRUEBA = 'Address 1234'
-        self.CITY_PRUEBA = 'San Rafael'
-        self.COUNTRY_PRUEBA = 'Argentina'
+        self.FIRSTNAME_TEST = 'Juan'
+        self.LASTNAME_TEST = 'Salleme'
+        self.PHONE_TEST = '542604660415'
+        self.ADDRESS_TEST = 'Address 1234'
+        self.CITY_TEST = 'San Rafael'
+        self.COUNTRY_TEST = 'Argentina'
         
-        self.app = create_app("testing")
+        os.environ['FLASK_CONTEXT'] = 'testing'
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
@@ -26,18 +27,15 @@ class UserDataTestCase(unittest.TestCase):
     def test_userdata(self):
         
         user_data = self.__get_userdata()
-
-        # db.session.add(user)
-        # db.session.commit()
         
-        self.assertEqual(user_data.firstname, self.FIRSTNAME_PRUEBA)
-        self.assertEqual(user_data.lastname, self.LASTNAME_PRUEBA)
-        self.assertEqual(user_data.phone, self.PHONE_PRUEBA)
-        self.assertEqual(user_data.address, self.ADDRESS_PRUEBA)
-        self.assertEqual(user_data.city, self.CITY_PRUEBA)
-        self.assertEqual(user_data.country, self.COUNTRY_PRUEBA)
+        self.assertEqual(user_data.firstname, self.FIRSTNAME_TEST)
+        self.assertEqual(user_data.lastname, self.LASTNAME_TEST)
+        self.assertEqual(user_data.phone, self.PHONE_TEST)
+        self.assertEqual(user_data.address, self.ADDRESS_TEST)
+        self.assertEqual(user_data.city, self.CITY_TEST)
+        self.assertEqual(user_data.country, self.COUNTRY_TEST)
 
-    def __get_userdata(self):
+    def __get_userdata(self) -> UserData:
         
         user_data = UserData()
         user_data.firstname = 'Juan'

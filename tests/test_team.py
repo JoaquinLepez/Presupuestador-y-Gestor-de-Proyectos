@@ -1,4 +1,4 @@
-import unittest
+import unittest, os
 from app import create_app, db
 from app.models import Team
 from app.services import TeamService
@@ -9,9 +9,10 @@ class TeamTestCase(unittest.TestCase):
     
     def setUp(self):
         # Team
-        self.TEAMNAME_PRUEBA = 'Equipo 1'
+        self.TEAMNAME_TEST = 'Equipo 1'
 
-        self.app = create_app("testing")
+        os.environ['FLASK_CONTEXT'] = 'testing'
+        self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
@@ -21,21 +22,18 @@ class TeamTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-    def test_team(self):
-        
+    def test_team(self):  
         team = self.__get_team()
 
-        # db.session.add(user)
-        # db.session.commit()
         self.assertIsNotNone(team)
-        self.assertEqual(team.team_name, self.TEAMNAME_PRUEBA)
+        self.assertEqual(team.team_name, self.TEAMNAME_TEST)
 
     def test_team_save(self):
         team = self.__get_team()
         team_service.save(team)
 
         self.assertGreaterEqual(team.id,1)
-        self.assertEqual(team.team_name, self.TEAMNAME_PRUEBA)
+        self.assertEqual(team.team_name, self.TEAMNAME_TEST)
     
     def test_team_delete(self):
         team = self.__get_team()
@@ -67,9 +65,9 @@ class TeamTestCase(unittest.TestCase):
         self.assertIsNotNone(team_find)
         self.assertEqual(team_find.id, team.id)
 
-    def __get_team(self):
+    def __get_team(self) -> Team:
         team = Team()
-        team.team_name = self.TEAMNAME_PRUEBA
+        team.team_name = self.TEAMNAME_TEST
 
         return team
 
