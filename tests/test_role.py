@@ -1,6 +1,9 @@
 import unittest, os
 from app import create_app, db
 from app.models import Role, Permission
+from app.services import RoleService
+
+role_service = RoleService()
 
 class RoleTestCase(unittest.TestCase):
     
@@ -9,8 +12,8 @@ class RoleTestCase(unittest.TestCase):
         self.NAME_TEST = 'Admin'
 
         # Permission
-        self.PERMISSION_TEST1 = "add_task"
-        self.PERMISSION_TEST2 = "delete_task"
+        self.PERMISSION_TEST1 = "add_role"
+        self.PERMISSION_TEST2 = "delete_role"
 
         os.environ['FLASK_CONTEXT'] = 'testing'
         self.app = create_app()
@@ -31,7 +34,36 @@ class RoleTestCase(unittest.TestCase):
         self.assertIsNotNone(role.permissions)
         self.assertEqual(role.permissions[0].name, self.PERMISSION_TEST1)
         self.assertEqual(role.permissions[1].name, self.PERMISSION_TEST2)
-         
+
+    def test_role_save(self):
+        role = self.__get_role()
+
+        role_service.save(role)
+
+        self.assertGreaterEqual(role.id,1)
+        self.assertEqual(role.name, self.NAME_TEST)
+    
+    def test_role_delete(self):
+        role = self.__get_role()
+        role_service.save(role)
+
+        role_service.delete(role)
+        self.assertIsNone(role_service.find(role.id))
+    
+    def test_role_all(self):
+        role = self.__get_role()
+        role_service.save(role)
+
+        roles = role_service.all()
+        self.assertGreaterEqual(len(roles), 1)
+
+    def test_role_find(self):
+        role = self.__get_role()
+        role_service.save(role)
+
+        role_find = role_service.find(1)
+        self.assertIsNotNone(role_find)
+        self.assertEqual(role_find.id, role.id)
 
     def __get_role(self) -> Role:
         role = Role()
