@@ -11,6 +11,6 @@ class Role(db.Model):
     # Permission M:N
     permissions = db.relationship('Permission', secondary = roles_permissions, back_populates = 'roles')
     # UserRoleTeam 1:N
-    # users_teams_roles = db.relationship('UserRoleTeam', back_populates = 'roles')
+    users_teams = db.relationship('UserRoleTeam', back_populates = 'role')
     
     

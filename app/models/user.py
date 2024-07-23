@@ -1,6 +1,5 @@
 from app import db
 from app.models.relations import users_tasks
-from app.models.relations import users_teams
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -15,8 +14,8 @@ class User(db.Model):
     data = db.relationship('UserData', uselist=False, back_populates='user')
     # Tasks N:M
     tasks = db.relationship('Task', secondary = users_tasks, back_populates = 'users')
-    # Teams N:M
-    teams = db.relationship('Team', secondary = users_teams, back_populates = 'users')
+    # UserRoleTeam 1:N
+    teams_roles = db.relationship('UserRoleTeam', back_populates = 'user')
 
 
 

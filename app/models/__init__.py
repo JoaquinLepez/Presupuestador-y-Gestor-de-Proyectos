@@ -5,3 +5,4 @@ from .task import Task
 from .team import Team
 from .role import Role
 from .permission import Permission
+from .user_role_team import UserRoleTeam

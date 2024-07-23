@@ -1,5 +1,4 @@
 from app import db
-from app.models.relations import users_teams
 
 class Team(db.Model):
     __tablename__ = 'teams'
@@ -10,6 +9,5 @@ class Team(db.Model):
     # Relaciones con otras tablas
     # Projects 1:1
     project = db.relationship('Project', uselist = False, back_populates = 'team')
-
-    # Users M:N
-    users = db.relationship('User', secondary = users_teams, back_populates = 'teams')
+    # UserRoleTeam 1:N
+    users_roles = db.relationship('UserRoleTeam', back_populates = 'team')
