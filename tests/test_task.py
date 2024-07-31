@@ -2,6 +2,7 @@ import unittest, os
 from app import create_app, db
 from app.models import Task
 from app.services import TaskService
+from datetime import datetime
 
 task_service = TaskService()
 
@@ -11,8 +12,8 @@ class TaskTestCase(unittest.TestCase):
         # Task
         self.NAME_TEST = 'Tarea 1'
         self.DESCRIPTION_TEST = 'Make Money'
-        self.STARTDATE_TEST = '1/1/0'
-        self.DEADLINE_TEST = '8/7/24'
+        self.STARTDATE_TEST = datetime(2024,2,14,14,14,14)
+        self.DEADLINE_TEST = datetime(2024,3,14,14,14,14)
         self.PRIORITY_TEST = 'High'
         self.DIFFICULTY_TEST = 'Hard'
         self.STATE_TEST = 'In Progress'

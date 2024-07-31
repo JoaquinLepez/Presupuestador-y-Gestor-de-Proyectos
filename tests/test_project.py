@@ -2,6 +2,7 @@ import unittest, os
 from app import create_app, db
 from app.models import Project, Task
 from app.services import ProjectService
+from datetime import datetime
 
 project_service = ProjectService()
 
@@ -11,14 +12,14 @@ class ProjectTasteCase(unittest.TestCase):
         # Project
         self.NAME_TEST = "mi proyecto"
         self.DESCRIPTION_TEST = "esta es la descripcion de mi proyecto"
-        self.START_DATE_TEST = "1/1/2024"
-        self.DEADLINE_TEST = "28/2/2024"
+        self.START_DATE_TEST = datetime(2024,1,1,0,0,0)
+        self.DEADLINE_TEST = datetime(2024,2,28,16,34,33)
         self.STATE_TEST = "en proceso"
         # Task 1
         self.TASK1_NAME_TEST = "TEST número 1"
         self.TASK1_DESCRIPTION_TEST = "esta es la descripcion de mi TEST número 1"
-        self.TASK1_START_DATE_TEST = "1/1/2024"
-        self.TASK1_DEADLINE_TEST = "28/2/2024"
+        self.TASK1_START_DATE_TEST = datetime(2024,1,1,2,23,5)
+        self.TASK1_DEADLINE_TEST = datetime(2024,1,2,17,3,0)
         self.TASK1_PRIORITY_TEST = "alta prioridad"
         self.TASK1_DIFFICULTY_TEST = "elevada"
         self.TASK1_STATE_TEST = "en proceso"

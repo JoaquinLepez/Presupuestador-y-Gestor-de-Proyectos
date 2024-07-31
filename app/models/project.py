@@ -6,8 +6,8 @@ class Project(db.Model):
     id: int = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name: str = db.Column(db.String(80), nullable = False)
     description: str = db.Column(db.String(64), nullable = False)
-    start_date: str = db.Column(db.String(64), nullable = False)
-    deadline: str = db.Column(db.String(64), nullable = False)
+    start_date: str = db.Column(db.DateTime, nullable = False)
+    deadline: str = db.Column(db.DateTime, nullable = False)
     state: str = db.Column(db.String(64), nullable = False)
 
     # Atributos Foraneos
