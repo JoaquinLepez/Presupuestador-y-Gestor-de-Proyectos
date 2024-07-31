@@ -37,11 +37,11 @@ class ProjectTasteCase(unittest.TestCase):
     def test_project(self):
         project = self.__get_project()
 
-        self.assertTrue(project.name, self.NAME_TEST)
-        self.assertTrue(project.description, self.DESCRIPTION_TEST)
-        self.assertTrue(project.start_date, self.START_DATE_TEST)
-        self.assertTrue(project.deadline, self.DEADLINE_TEST)
-        self.assertTrue(project.state, self.STATE_TEST)
+        self.assertEqual(project.name, self.NAME_TEST)
+        self.assertEqual(project.description, self.DESCRIPTION_TEST)
+        self.assertEqual(project.start_date, self.START_DATE_TEST)
+        self.assertEqual(project.deadline, self.DEADLINE_TEST)
+        self.assertEqual(project.state, self.STATE_TEST)
         self.assertIsNotNone(project.task[0])
         self.assertEqual(project.task[0].name, self.TASK1_NAME_TEST)
     
