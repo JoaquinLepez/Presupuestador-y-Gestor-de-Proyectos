@@ -6,11 +6,16 @@ basedir = os.path.abspath(Path(__file__).parents[2])
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
-     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = 'gproyectoramandu@gmail.com'
+    MAIL_PASSWORD = os.environ.get('EMAIL_KEY')
 
-     @staticmethod
-     def init_app(app):
-         pass
+    @staticmethod
+    def init_app(app):
+        pass
         
 
 class DevelopmentConfig(Config):
@@ -29,7 +34,8 @@ class ProductionConfig(Config):
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
-    'production': ProductionConfig
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
 }
 
 
