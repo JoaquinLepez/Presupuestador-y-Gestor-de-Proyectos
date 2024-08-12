@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_mail import Mail
 import os
 from app.config import config
-from .resources import main as main_blueprint
-from flask_mail import Mail
+from app.routes import RouteApp
+
+
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -18,10 +20,11 @@ def create_app():
     configuration = config[app_context if app_context else 'development']
     app.config.from_object(configuration)
 
+    route = RouteApp()
+    route.init_app(app)
+
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
-
-    app.register_blueprint(main_blueprint)
-
+    
     return app
