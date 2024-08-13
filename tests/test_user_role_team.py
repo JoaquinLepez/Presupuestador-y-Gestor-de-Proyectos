@@ -2,11 +2,12 @@ import unittest,os
 from typing import List
 from app import create_app, db
 from app.models import User, Role, Team, UserRoleTeam
-from app.services import UserService, RoleService, TeamService
+from app.services import UserService, RoleService, TeamService, UserRoleTeamService
 
 user_service = UserService()
 role_service = RoleService()
 team_service = TeamService()
+user_role_team_service = UserRoleTeamService()
 
 class UserRoleTeamTestCase(unittest.TestCase):
     
@@ -25,7 +26,8 @@ class UserRoleTeamTestCase(unittest.TestCase):
         self.TEAMNAME_TEST2 = 'Equipo 2'
 
         # Role
-        self.ROLENAME_TEST = 'Admin'
+        self.ROLENAME_TEST1 = 'Admin'
+        self.ROLENAME_TEST2 = 'Manager'
     
         os.environ['FLASK_CONTEXT'] = 'testing'
         self.app = create_app()
@@ -40,41 +42,56 @@ class UserRoleTeamTestCase(unittest.TestCase):
 
     def test_UserRoleTeam(self):
         user = self.__get_users()[0]
-        role = self.__get_role()
+        role = self.__get_role(self.ROLENAME_TEST1)
         team = self.__get_teams()[0]
 
         user_service.save(user)
         role_service.save(role)
         team_service.save(team)
 
-        user_role_team = UserRoleTeam(user_id= user.id, role_id = role.id, team_id = team.id)
-        db.session.add(user_role_team)
-        db.session.commit()
+        user_role_team_service.assign_role_to_user(user.id, role.id, team.id)
+        user_role_team = UserRoleTeam.query.filter_by(user_id=user.id, role_id=role.id, team_id=team.id).first()
 
         self.assertIsNotNone(user_role_team)
         self.assertEqual(user_role_team.user.username, self.USERNAME_TEST1)
-        self.assertEqual(user_role_team.role.name, self.ROLENAME_TEST)
+        self.assertEqual(user_role_team.role.name, self.ROLENAME_TEST1)
         self.assertEqual(user_role_team.team.team_name, self.TEAMNAME_TEST1)
 
-    def test_user(self):
+    def test_user_with_multiple_roles_and_teams(self):
         user1 = self.__get_users()[0]
         team1 = self.__get_teams()[0]
         team2 = self.__get_teams()[1]
-        role = self.__get_role()
+        role1 = self.__get_role(self.ROLENAME_TEST1)
+        role2 = self.__get_role(self.ROLENAME_TEST2)
 
         user_service.save(user1)
-        role_service.save(role)
+        role_service.save(role1)
+        role_service.save(role2)
         team_service.save(team1)
         team_service.save(team2)
 
-        urt1 = UserRoleTeam(user_id= user1.id, role_id = role.id, team_id = team1.id)
-        urt2 = UserRoleTeam(user_id= user1.id, role_id = role.id, team_id = team2.id)
-        db.session.add(urt1)
-        db.session.add(urt2)
-        db.session.commit()
+        user_role_team_service.assign_role_to_user(user1.id, role1.id, team1.id)
+        user_role_team_service.assign_role_to_user(user1.id, role2.id, team2.id)
 
         self.assertEqual(user1.teams_roles[0].team.team_name, self.TEAMNAME_TEST1)
+        self.assertEqual(user1.teams_roles[0].role.name, self.ROLENAME_TEST1)
         self.assertEqual(user1.teams_roles[1].team.team_name, self.TEAMNAME_TEST2)
+        self.assertEqual(user1.teams_roles[1].role.name, self.ROLENAME_TEST2)
+
+    def test_remove_role_from_user(self):
+        user = self.__get_users()[0]
+        role = self.__get_role(self.ROLENAME_TEST1)
+        team = self.__get_teams()[0]
+
+        user_service.save(user)
+        role_service.save(role)
+        team_service.save(team)
+
+        user_role_team_service.assign_role_to_user(user.id, role.id, team.id)
+        user_role_team_service.remove_role_from_user(user.id, role.id, team.id)
+
+        user_role_team = UserRoleTeam.query.filter_by(user_id=user.id, role_id=role.id, team_id=team.id).first()
+        self.assertIsNone(user_role_team)
 
     def __get_users(self) -> List[User]:
         user1 = User()
@@ -89,10 +106,9 @@ class UserRoleTeamTestCase(unittest.TestCase):
 
         return [user1, user2]
     
-    def __get_role(self) -> Role:
+    def __get_role(self, role_name: str) -> Role:
         role = Role()
-        role.name = self.ROLENAME_TEST
-
+        role.name = role_name
         return role
     
     def __get_teams(self) -> List[Team]:

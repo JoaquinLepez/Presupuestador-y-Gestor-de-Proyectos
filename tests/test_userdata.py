@@ -38,12 +38,12 @@ class UserDataTestCase(unittest.TestCase):
     def __get_userdata(self) -> UserData:
         
         user_data = UserData()
-        user_data.firstname = 'Juan'
-        user_data.lastname = 'Salleme'
-        user_data.phone = '542604660415'
-        user_data.address = 'Address 1234'
-        user_data.city = 'San Rafael'
-        user_data.country = 'Argentina'
+        user_data.firstname = self.FIRSTNAME_TEST
+        user_data.lastname = self.LASTNAME_TEST
+        user_data.phone = self.PHONE_TEST
+        user_data.address = self.ADDRESS_TEST
+        user_data.city = self.CITY_TEST
+        user_data.country = self.COUNTRY_TEST
 
         return user_data
     

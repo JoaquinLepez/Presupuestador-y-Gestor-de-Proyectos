@@ -46,7 +46,7 @@ class UserTestCase(unittest.TestCase):
         user = self.__get_user()
         user_service.save(user)
 
-        user_service.delete(user)
+        user_service.delete(user.id)
         self.assertIsNone(user_service.find(user.id))
 
     def test_user_all(self):
