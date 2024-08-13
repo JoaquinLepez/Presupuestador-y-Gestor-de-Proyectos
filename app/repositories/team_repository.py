@@ -1,29 +1,30 @@
+from typing import List, Optional
 from app.models import Team
 from app import db
 
 class TeamRepository:
 
-    def save(self, team):
+    def save(self, team: Team) -> Team:
         db.session.add(team)
         db.session.commit()
         return team
     
-    def update(self, team, id):
+    def update(self, team: Team, id: int) -> Optional[Team]:
         entity = self.find(id)
         entity.name = team.name
         db.session.add(entity)
         db.session.commit()
         return entity
     
-    def delete(self, team):
+    def delete(self, team: Team) -> None:
         db.session.delete(team)
         db.session.commit()
     
-    def all(self):
+    def all(self) -> List[Team]:
         teams = db.session.query(Team).all()
         return teams
 
-    def find(self, id):
+    def find(self, id: int) -> Optional[Team]:
         if id is None or id == 0:
             return None
         try:
@@ -31,7 +32,5 @@ class TeamRepository:
         except:
             return None
         
-    def find_by_name(self, name):
+    def find_by_name(self, name: str) -> Optional[Team]:
         return db.session.query(Team).filter(Team.name == name).one_or_none()
-    
-

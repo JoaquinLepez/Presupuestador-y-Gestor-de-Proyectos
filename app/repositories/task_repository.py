@@ -1,14 +1,15 @@
+from typing import List, Optional
 from app import db
 from app.models import Task
 
 class TaskRepository:
 
-    def save(self, task):
+    def save(self, task: Task) -> Task:
         db.session.add(task)
         db.session.commit()
         return task
     
-    def update(self, task, id):
+    def update(self, task: Task, id: int) -> Optional[Task]:
         entity = self.find(id)
         entity.name = task.name
         entity.description = task.description
@@ -21,15 +22,15 @@ class TaskRepository:
         db.session.commit()
         return entity
 
-    def delete(self, task):
+    def delete(self, task: Task) -> None:
         db.session.delete(task)
         db.session.commit()
 
-    def all(self):
+    def all(self) -> List[Task]:
         tasks = db.session.query(Task).all()
         return tasks
     
-    def find(self, id):
+    def find(self, id: int) -> Optional[Task]:
         if id is None or id == 0:
             return None
         try:
@@ -37,6 +38,5 @@ class TaskRepository:
         except:
             return None
         
-    def find_by_name(self, name):
+    def find_by_name(self, name: str) -> Optional[Task]:
         return db.session.query(Task).filter(Task.name == name).one_or_none()
-    
