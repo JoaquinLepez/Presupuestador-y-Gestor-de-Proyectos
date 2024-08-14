@@ -1,5 +1,5 @@
 from app.repositories import UserRepository
-from app.services import Security
+from app.services import SecurityManager, WerkzeugSecurity
 from app.models import User
 from typing import List, Optional
 
@@ -7,8 +7,11 @@ repository = UserRepository()
 
 class UserService:
 
+    def __init__(self) -> None:
+        self.__security = SecurityManager(WerkzeugSecurity())
+
     def save(self, user: User) -> User:
-        user.password = Security.generate_password(user.password)
+        user.password = self.__security.generate_password(user.password)
         return repository.save(user)
     
     def update(self, user: User, id: int) -> User:
@@ -35,6 +38,6 @@ class UserService:
     def check_auth(self, username: str, password: str) -> bool:
         user = self.find_by_username(username)
         if user is not None:
-            return Security.check_password(user.password, password)
+            return self.__security.check_password(user.password, password)
         else:
             return False
