@@ -17,11 +17,9 @@ class UserService:
     def update(self, user: User, id: int) -> User:
         return repository.update(user, id)
     
-    def delete(self, user_id: int) -> bool:
-        user = self.find(user_id)
-        if not user:
-            return False
-        return repository.delete(user_id)
+    def delete(self, user_id: int) -> None:
+        user = repository.find(user_id)
+        repository.delete(user)
     
     def all(self) -> List[User]:
         return repository.all()

@@ -13,17 +13,21 @@ class UserRepository:
         entity = self.find(id)
         entity.username = user.username
         entity.email = user.email
+        entity.data.firstname = user.data.firstname
+        entity.data.lastname = user.data.lastname
+        entity.data.phone = user.data.phone
+        entity.data.address = user.data.address
+        entity.data.city = user.data.city
+        entity.data.country = user.data.country
         db.session.add(entity)
         db.session.commit()
         return entity
     
-    def delete(self, user_id: int) -> bool:
-        user = User.query.get(user_id)
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return True  # Solo devolver True si el usuario fue eliminado.
-        return False  # Devolver False si el usuario no existe.
+    def delete(self, user: User) -> bool:      
+        if user.data is not None:
+            db.session.delete(user.data)
+        db.session.delete(user)
+        db.session.commit()
     
     def all(self) -> List[User]:
         users = db.session.query(User).all()
@@ -40,5 +44,5 @@ class UserRepository:
     def find_by_username(self, username: str) -> Optional[User]:
         return db.session.query(User).filter(User.username == username).one_or_none()
     
-    def find_by_email(self, email: str) -> List[User]:
-        return db.session.query(User).filter(User.email.like(f'%{email}%')).all()
+    def find_by_email(self, email: str) -> Optional[User]:
+        return db.session.query(User).filter(User.email == email).one_or_none()
