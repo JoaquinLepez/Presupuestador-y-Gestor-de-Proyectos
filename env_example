@@ -1,6 +1,7 @@
-FLASK_APP = creator.py
+FLASK_APP = app.py
 FLASK_ENV = development
 SECRET_KEY = contraseña
+EMAIL_KEY = 'qivh alyz rqtr phcm'
 DEV_DB_URI = 'postgresql://usuario:password@localhost:port/database'
 TEST_DB_URI = 'postgresql://usuario:password@localhost:port/database'
 PROD_DB_URI = 'postgresql://usuario:password@localhost:port/database'

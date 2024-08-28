@@ -11,6 +11,7 @@ class Config:
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'gproyectoramandu@gmail.com'
+    MAIL_DEFAULT_SENDER = 'gproyectoramandu@gmail.com'
     MAIL_PASSWORD = os.environ.get('EMAIL_KEY')
 
     @staticmethod
@@ -37,5 +38,3 @@ config = {
     'production': ProductionConfig,
     'default': DevelopmentConfig
 }
-
-
