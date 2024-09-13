@@ -12,7 +12,8 @@ class ProjectService:
     def update(self, project: Project, id: int) -> Project:
         return repository.update(project, id)
     
-    def delete(self, project: Project) -> None:
+    def delete(self, id_project: Project) -> None:
+        project = repository.find(id_project)
         return repository.delete(project)
     
     def all(self) -> List[Project]:

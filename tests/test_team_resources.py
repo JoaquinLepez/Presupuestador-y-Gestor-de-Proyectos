@@ -2,7 +2,7 @@ import os
 import unittest
 from app import create_app, db
 
-class TeanResourceTestCase(unittest.TestCase):
+class TeamResourceTestCase(unittest.TestCase):
 
     def setUp(self):
         os.environ['FLASK_CONTEXT'] = 'testing'

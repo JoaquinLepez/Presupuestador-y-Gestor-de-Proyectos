@@ -2,7 +2,7 @@ import os
 import unittest
 from app import create_app, db
 
-class UserResourceTestCase(unittest.TestCase):
+class ProjectResourceTestCase(unittest.TestCase):
 
     def setUp(self):
         os.environ['FLASK_CONTEXT'] = 'testing'
@@ -16,7 +16,7 @@ class UserResourceTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
     
-    def test_users(self):
+    def test_projects(self):
         client = self.app.test_client(use_cookies=True)
-        response = client.get('http://localhost:5000/api/v1/users')
+        response = client.get('http://localhost:5000/api/v1/projects')
         self.assertEqual(response.status_code, 200)

@@ -64,7 +64,7 @@ class ProjectTasteCase(unittest.TestCase):
         project = self.__get_project()
         project_service.save(project)
 
-        project_service.delete(project)
+        project_service.delete(project.id)
         self.assertIsNone(project_service.find(project.id))
 
     def test_project_all(self):

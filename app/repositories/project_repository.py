@@ -11,14 +11,17 @@ class ProjectRepository:
     
     def update(self, project: Project, id: int) -> Project:
         entity = self.find(id)
-        entity.name = project.name
-        entity.description = project.description
-        entity.start_date = project.start_date
-        entity.deadline = project.deadline
-        entity.state = project.state
-        db.session.add(entity)
-        db.session.commit()
-        return entity
+        if entity:
+            entity.name = project.name
+            entity.description = project.description
+            entity.start_date = project.start_date
+            entity.deadline = project.deadline
+            entity.state = project.state
+            db.session.add(entity)
+            db.session.commit()
+            return entity
+        else:
+            return None
     
     def delete(self, project: Project) -> None:
         db.session.delete(project)
