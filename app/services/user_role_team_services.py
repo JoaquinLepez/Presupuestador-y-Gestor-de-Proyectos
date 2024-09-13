@@ -1,16 +1,28 @@
 from typing import List
 
 from app.repositories.user_role_team_repository import UserRoleTeamRepository
-from app.models import UserRoleTeam, Role, User
+from app.models import UserRoleTeam, Role, User, Team
 
 class UserRoleTeamService:
     def __init__(self):
         self._repository = UserRoleTeamRepository()
 
-    # Asignación y remoción de roles
-    def assign_role_to_user(self, user_id: int, role_id: int, team_id: int) -> UserRoleTeam:
-        return self._repository.assign_role_to_user(user_id, role_id, team_id)
+    def all(self) -> List[UserRoleTeam]:
+        return self._repository.all()
+
+    # def save(self, urt: UserRoleTeam) -> UserRoleTeam:
+    #     return self._repository.save(urt)
     
+    # Asignación y remoción de roles
+    def add_user_to_team_with_role(self, urt: UserRoleTeam) -> UserRoleTeam:
+        return self._repository.add_user_to_team_with_role(urt)
+    
+    def get_teams_and_roles(self, user_id: int) -> List[UserRoleTeam]:
+        return self._repository.get_teams_and_roles(user_id)
+    
+    def get_users_and_roles(self, team_id: int) -> List[UserRoleTeam]:
+        return self._repository.get_users_and_roles(team_id)
+
     def remove_role_from_user(self, user_id: int, role_id: int, team_id: int) -> bool:
         return self._repository.remove_role_from_user(user_id, role_id, team_id)
     

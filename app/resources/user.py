@@ -1,12 +1,16 @@
 from flask import Blueprint, request
-from app.mapping import UserSchema, ResponseSchema 
+from app.mapping import UserSchema, ResponseSchema, UserRoleTeamSchema
 from app.services.response_message import ResponseBuilder
-from app.services.user_services import UserService
+from app.services import UserService, UserRoleTeamService
 
 user = Blueprint('user', __name__)
+
 user_schema = UserSchema()
 response_schema = ResponseSchema()
+urt_schema = UserRoleTeamSchema()
+
 user_service = UserService()
+urt_service = UserRoleTeamService()
 
 # Get: Muestra JSON con todos los usuarios
 @user.route('/users', methods=['GET'])
@@ -69,3 +73,7 @@ def find_by_email(email:str):
         return response_schema.dump(response_builder.build()), 404
 
 
+# Get: Muestra JSON con los Teams y Roles de un usuario
+@user.route('/users/teams/<int:id>', methods=['GET'])
+def get_roles_and_teams(id):
+    return {"teams": urt_schema.dump(urt_service.get_teams_and_roles(id),many=True)}, 200
