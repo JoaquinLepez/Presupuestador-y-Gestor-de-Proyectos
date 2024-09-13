@@ -12,8 +12,9 @@ class TeamService:
     def update(self, team: Team, id: int) -> Team:
         return repository.update(team, id)
     
-    def delete(self, team: Team) -> bool:
-        return repository.delete(team)
+    def delete(self, team_id: int) -> None:
+        team = repository.find(team_id)
+        repository.delete(team)
     
     def all(self) -> List[Team]:
         return repository.all()

@@ -39,7 +39,7 @@ class TeamTestCase(unittest.TestCase):
         team = self.__get_team()
         team_service.save(team)
 
-        team_service.delete(team)
+        team_service.delete(team.id)
         self.assertIsNone(team_service.find(team.id))
     
     def test_team_all(self):
