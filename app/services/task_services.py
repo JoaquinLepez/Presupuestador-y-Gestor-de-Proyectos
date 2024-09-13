@@ -12,8 +12,8 @@ class TaskService:
     def update(self, task: Task, id: int) -> Task:
         return repository.update(task, id)
     
-    def delete(self, task: Task) -> bool:
-        return repository.delete(task)
+    def delete(self, task_id: int) -> bool:
+        return repository.delete(task_id)
     
     def all(self) -> List[Task]:
         return repository.all()

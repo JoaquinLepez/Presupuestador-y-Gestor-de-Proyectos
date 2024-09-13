@@ -58,7 +58,7 @@ class TaskTestCase(unittest.TestCase):
         task = self.__get_task()
         task_service.save(task)
 
-        task_service.delete(task)
+        task_service.delete(task.id)
         self.assertIsNone(task_service.find(task.id))
     
     def test_task_all(self):

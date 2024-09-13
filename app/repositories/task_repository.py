@@ -22,7 +22,8 @@ class TaskRepository:
         db.session.commit()
         return entity
 
-    def delete(self, task: Task) -> None:
+    def delete(self, id_task: id) -> None:
+        task = self.find(id_task)
         db.session.delete(task)
         db.session.commit()
 
