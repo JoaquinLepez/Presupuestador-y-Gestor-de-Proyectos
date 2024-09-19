@@ -10,6 +10,8 @@ class TaskSchema(Schema):
     priority = fields.String(required=True, validate=fields.Length(min=1, max=64))
     difficulty = fields.String(required=True, validate=fields.Length(min=1, max=64))
     state = fields.String(required=True, validate=fields.Length(min=1, max=64))
+    # Foreign key
+    project_id = fields.Integer(required=True)
 
     @post_load
     def make_data(self, data, **kwargs):

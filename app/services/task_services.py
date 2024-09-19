@@ -1,8 +1,10 @@
 from app.repositories import TaskRepository
-from app.models import Task
+from app.models import Task, User
 from typing import List
+from app.services import UserService
 
 repository = TaskRepository()
+user_service = UserService()
 
 class TaskService:
 
@@ -23,3 +25,17 @@ class TaskService:
     
     def find_by_name(self, name: str) -> Task:
         return repository.find_by_name(name)
+    
+    def add_user(self, task_id: int, user_id: int) -> Task:
+        task = self.find(task_id)
+        user = user_service.find(user_id)
+        return repository.add_user(task, user)
+    
+    def delete_user(self, task_id: int, user_id: int) -> Task:
+        task = self.find(task_id)
+        user = user_service.find(user_id)
+        return repository.delete_user(task, user)
+    
+    def get_users(self, task_id: int) -> List[User]:
+        task = self.find(task_id)
+        return repository.get_users(task)
