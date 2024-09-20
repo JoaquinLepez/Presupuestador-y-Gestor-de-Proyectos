@@ -11,10 +11,13 @@ class TeamRepository:
     
     def update(self, team: Team, id: int) -> Optional[Team]:
         entity = self.find(id)
-        entity.name = team.name
-        db.session.add(entity)
-        db.session.commit()
-        return entity
+        if entity:
+            entity.team_name = team.team_name
+            db.session.add(entity)
+            db.session.commit()
+            return entity
+        else:
+            return None
     
     def delete(self, team: Team) -> None:
         db.session.delete(team)
@@ -33,4 +36,4 @@ class TeamRepository:
             return None
         
     def find_by_name(self, name: str) -> Optional[Team]:
-        return db.session.query(Team).filter(Team.name == name).one_or_none()
+        return db.session.query(Team).filter(Team.team_name == name).one_or_none()

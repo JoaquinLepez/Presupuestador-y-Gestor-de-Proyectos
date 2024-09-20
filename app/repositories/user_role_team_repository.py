@@ -1,14 +1,31 @@
-from app.models.user_role_team import UserRoleTeam
+from typing import List
+from app.models import UserRoleTeam
 from app import db
 
 class UserRoleTeamRepository:
 
-    def assign_role_to_user(self, user_id, role_id, team_id):
-        user_role_team = UserRoleTeam(user_id=user_id, role_id=role_id, team_id=team_id)
-        db.session.add(user_role_team)
+    def all(self) -> List[UserRoleTeam]:
+        urt = db.session.query(UserRoleTeam).all()
+        return urt
+
+    def add_user_to_team_with_role(self, urt: UserRoleTeam) -> UserRoleTeam:
+        db.session.add(urt)
         db.session.commit()
-        return user_role_team
+        return urt
     
+    def get_teams_and_roles(self, user_id):
+        teams = db.session.query(UserRoleTeam.role_id, UserRoleTeam.team_id).filter_by(user_id=user_id).all()
+        return teams
+
+        # La siguiente línea devuelve una lista con los nombres de los Team y los nombres de los Role que le corresponden al usuario 
+        # teams = db.session.query(UserRoleTeam,Role.name.label('role_name'),Team.team_name.label('team_name')).join(Role, UserRoleTeam.role_id == Role.id).join(Team, UserRoleTeam.team_id == Team.id).filter(UserRoleTeam.user_id == user_id).all()
+        # return teams
+    
+    def get_users_and_roles(self, team_id):
+        result = db.session.query(UserRoleTeam.user_id, UserRoleTeam.role_id).filter_by(team_id=team_id).all()
+        print(result)
+        return result
+
     def remove_role_from_user(self, user_id, role_id, team_id):
         user_role_team = db.session.query(UserRoleTeam).filter_by(user_id=user_id, role_id=role_id, team_id=team_id).one_or_none()
         if user_role_team:
