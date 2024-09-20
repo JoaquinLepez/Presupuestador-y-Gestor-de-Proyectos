@@ -18,9 +18,8 @@ class Task(db.Model):
 
     # Relaciones con otras tablas
     # Projects N:1
-    project = db.relationship('Project', back_populates = 'task')
+    project = db.relationship('Project', back_populates = 'tasks')
 
     # Users M:N
-    users = db.relationship('User', secondary = users_tasks, back_populates = 'tasks')
-    
+    users = db.relationship('User', secondary = users_tasks, back_populates = 'tasks', cascade = 'delete')
     

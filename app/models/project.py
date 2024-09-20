@@ -17,4 +17,4 @@ class Project(db.Model):
     # Teams 1:1
     team = db.relationship('Team', uselist = False, back_populates = 'project')
     # Tasks 1:N
-    task = db.relationship('Task', back_populates = 'project')
+    tasks = db.relationship('Task', back_populates = 'project', cascade = 'delete, delete-orphan')

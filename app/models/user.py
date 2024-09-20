@@ -11,11 +11,11 @@ class User(db.Model):
 
     # Relaciones con otras tablas
     # Userdata 1:1
-    data = db.relationship('UserData', uselist=False, back_populates='user')
+    data = db.relationship('UserData', uselist=False, back_populates='user', cascade = 'delete, delete-orphan')
     # Tasks N:M
-    tasks = db.relationship('Task', secondary = users_tasks, back_populates = 'users')
+    tasks = db.relationship('Task', secondary = users_tasks, back_populates = 'users', cascade = 'delete, delete')
     # UserRoleTeam 1:N
-    teams_roles = db.relationship('UserRoleTeam', back_populates = 'user')
+    teams_roles = db.relationship('UserRoleTeam', back_populates = 'user', cascade = 'delete, delete-orphan')
 
 
 

@@ -8,6 +8,6 @@ class Team(db.Model):
 
     # Relaciones con otras tablas
     # Projects 1:1
-    project = db.relationship('Project', uselist = False, back_populates = 'team')
+    project = db.relationship('Project', uselist = False, back_populates = 'team', cascade='delete, delete-orphan')
     # UserRoleTeam 1:N
-    users_roles = db.relationship('UserRoleTeam', back_populates = 'team')
+    users_roles = db.relationship('UserRoleTeam', back_populates = 'team', cascade='delete, delete-orphan')
