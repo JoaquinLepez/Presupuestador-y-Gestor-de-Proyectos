@@ -16,10 +16,6 @@ class UserRoleTeamRepository:
     def get_teams_and_roles(self, user_id):
         teams = db.session.query(UserRoleTeam.role_id, UserRoleTeam.team_id).filter_by(user_id=user_id).all()
         return teams
-
-        # La siguiente línea devuelve una lista con los nombres de los Team y los nombres de los Role que le corresponden al usuario 
-        # teams = db.session.query(UserRoleTeam,Role.name.label('role_name'),Team.team_name.label('team_name')).join(Role, UserRoleTeam.role_id == Role.id).join(Team, UserRoleTeam.team_id == Team.id).filter(UserRoleTeam.user_id == user_id).all()
-        # return teams
     
     def get_users_and_roles(self, team_id):
         result = db.session.query(UserRoleTeam.user_id, UserRoleTeam.role_id).filter_by(team_id=team_id).all()

@@ -44,13 +44,10 @@ class UserRoleTeamTestCase(unittest.TestCase):
         user = self.__get_users()[0]
         role = self.__get_role(self.ROLENAME_TEST1)
         team = self.__get_teams()[0]
+        
+        urt = UserRoleTeam(user=user, role=role, team=team)
 
-        user_service.save(user)
-        role_service.save(role)
-        team_service.save(team)
-
-        user_role_team_service.assign_role_to_user(user.id, role.id, team.id)
-        user_role_team = UserRoleTeam.query.filter_by(user_id=user.id, role_id=role.id, team_id=team.id).first()
+        user_role_team= user_role_team_service.add_user_to_team_with_role(urt)
 
         self.assertIsNotNone(user_role_team)
         self.assertEqual(user_role_team.user.username, self.USERNAME_TEST1)
@@ -60,18 +57,17 @@ class UserRoleTeamTestCase(unittest.TestCase):
     def test_user_with_multiple_roles_and_teams(self):
         user1 = self.__get_users()[0]
         team1 = self.__get_teams()[0]
-        team2 = self.__get_teams()[1]
         role1 = self.__get_role(self.ROLENAME_TEST1)
+
+        team2 = self.__get_teams()[1]
         role2 = self.__get_role(self.ROLENAME_TEST2)
 
-        user_service.save(user1)
-        role_service.save(role1)
-        role_service.save(role2)
-        team_service.save(team1)
-        team_service.save(team2)
+        urt1 = UserRoleTeam(user=user1, role=role1, team=team1)
+        urt2 = UserRoleTeam(user=user1, role=role2, team=team2)
 
-        user_role_team_service.assign_role_to_user(user1.id, role1.id, team1.id)
-        user_role_team_service.assign_role_to_user(user1.id, role2.id, team2.id)
+        user_role_team_service.add_user_to_team_with_role(urt1)
+        user_role_team_service.add_user_to_team_with_role(urt2)
+
 
         self.assertEqual(user1.teams_roles[0].team.team_name, self.TEAMNAME_TEST1)
         self.assertEqual(user1.teams_roles[0].role.name, self.ROLENAME_TEST1)
@@ -83,11 +79,9 @@ class UserRoleTeamTestCase(unittest.TestCase):
         role = self.__get_role(self.ROLENAME_TEST1)
         team = self.__get_teams()[0]
 
-        user_service.save(user)
-        role_service.save(role)
-        team_service.save(team)
+        urt = UserRoleTeam(user=user, role=role, team=team)
+        user_role_team_service.add_user_to_team_with_role(urt)
 
-        user_role_team_service.assign_role_to_user(user.id, role.id, team.id)
         user_role_team_service.remove_role_from_user(user.id, role.id, team.id)
 
         user_role_team = UserRoleTeam.query.filter_by(user_id=user.id, role_id=role.id, team_id=team.id).first()
@@ -119,6 +113,13 @@ class UserRoleTeamTestCase(unittest.TestCase):
         team2.team_name = self.TEAMNAME_TEST2
 
         return [team1, team2]
+    
+    def __get_user_role_team(self):
+        user = self.__get_users()[0]
+        role = self.__get_role(self.ROLENAME_TEST1)
+        team = self.__get_teams()[0]
+
+        return UserRoleTeam(user=user, role=role, team=team)
     
 
 if __name__ == '__main__':
