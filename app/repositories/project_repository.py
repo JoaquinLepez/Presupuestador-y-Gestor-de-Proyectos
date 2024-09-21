@@ -1,6 +1,7 @@
 from typing import List, Optional
-from app.models import Project
+from app.models import Project, Task, User
 from app import db
+from sqlalchemy.orm import joinedload
 
 class ProjectRepository:
 
@@ -41,3 +42,8 @@ class ProjectRepository:
         
     def find_by_name(self, name: str) -> Optional[Project]:
         return db.session.query(Project).filter(Project.name == name).one_or_none()
+    
+    def get_tasks(self, id: int) -> List[Task]:
+        return db.session.query(Task).filter(Task.project_id == id).options(
+            joinedload(Task.users).load_only(User.username, User.email),
+            joinedload(Task.users).noload(User.data)).all()

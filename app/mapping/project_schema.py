@@ -9,6 +9,9 @@ class ProjectSchema(Schema):
     deadline = fields.DateTime(required=False)
     state = fields.String(required=True, validate=fields.Length(min=1, max=120))
 
+    # Foreign key
+    team_id = fields.Integer(required=True)
+
     @post_load
     def make_data(self, data, **kwargs):
         return Project(**data)

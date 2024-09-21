@@ -13,6 +13,8 @@ class TaskSchema(Schema):
     # Foreign key
     project_id = fields.Integer(required=True)
 
+    users = fields.List(fields.Nested("UserSchema"), dump_only=True)
+
     @post_load
     def make_data(self, data, **kwargs):
         return Task(**data)

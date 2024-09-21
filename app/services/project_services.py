@@ -1,5 +1,5 @@
 from typing import List, Optional
-from app.models import Project
+from app.models import Project, Task
 from app.repositories import ProjectRepository
 
 repository = ProjectRepository()
@@ -24,3 +24,6 @@ class ProjectService:
     
     def find_by_name(self, name: str) -> Optional[Project]:
         return repository.find_by_name(name)
+    
+    def get_tasks(self, id: int) -> List[Task]:
+        return repository.get_tasks(id)
