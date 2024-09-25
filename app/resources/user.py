@@ -21,6 +21,13 @@ def index():
 @user.route('/users/add', methods=['POST'])
 def post_user():
     user = user_schema.load(request.json)
+
+    # Verificar si UserData está presente
+    if not user.data:
+        response_builder = ResponseBuilder()
+        response_builder.add_message("UserData es requerido para crear un nuevo usuario").add_status_code(400)
+        return response_schema.dump(response_builder.build()), 400
+
     return {"user": user_schema.dump(user_service.save(user))}, 201
 
 # Delete: Elimina un usuario a partir de su id

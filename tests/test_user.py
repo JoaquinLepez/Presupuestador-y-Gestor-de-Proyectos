@@ -1,6 +1,6 @@
-import unittest,os
+import unittest, os
 from app import create_app, db
-from app.models import User
+from app.models import User, UserData
 from app.services import UserService
 
 user_service = UserService()
@@ -12,6 +12,13 @@ class UserTestCase(unittest.TestCase):
         self.USERNAME_TEST = 'ramandu'
         self.PASSWORD_TEST = '123456'
         self.EMAIL_TEST = 'test@test.com'
+
+        self.FIRSTNAME_TEST = 'Juan'
+        self.LASTNAME_TEST = 'Salleme'
+        self.PHONE_TEST = '542604660415'
+        self.ADDRESS_TEST = 'Address 1234'
+        self.CITY_TEST = 'San Rafael'
+        self.COUNTRY_TEST = 'Argentina'
     
         os.environ['FLASK_CONTEXT'] = 'testing'
         self.app = create_app()
@@ -71,8 +78,22 @@ class UserTestCase(unittest.TestCase):
         user.email = self.EMAIL_TEST
         user.password = self.PASSWORD_TEST
 
+        user_data = self._get_user_data()
+        user.data = user_data
+
         return user
     
+    def _get_user_data(self) -> UserData:
+        
+        user_data = UserData()
+        user_data.firstname = self.FIRSTNAME_TEST
+        user_data.lastname = self.LASTNAME_TEST
+        user_data.phone = self.PHONE_TEST
+        user_data.address = self.ADDRESS_TEST
+        user_data.city = self.CITY_TEST
+        user_data.country = self.COUNTRY_TEST
+
+        return user_data
 
 if __name__ == '__main__':
     unittest.main()

@@ -11,6 +11,10 @@ class UserService:
         self.__security = SecurityManager(WerkzeugSecurity())
 
     def save(self, user: User) -> User:
+        # Verificar si UserData está presente
+        if not user.data:
+            raise ValueError("UserData is required for creating a new user.")
+        
         user.password = self.__security.generate_password(user.password)
         return repository.save(user)
     
